@@ -16,7 +16,7 @@ from allennlp.training.metrics import CategoricalAccuracy, F1Measure
 from allennlp.training.trainer import Trainer
 import sys
 # sys.path.append('/Users/geor/git/comp5222-tools/allenNLP/realworldnlp')
-sys.path.append('/home/qianchen/HKUST_COMP5222/realworldnlp/realworldnlp') #server
+sys.path.append('/home/qianchen/HKUST_COMP5222/realworldnlp') #server
 # from predictors import SentenceClassifierPredictor
 
 # import os
