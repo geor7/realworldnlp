@@ -123,6 +123,8 @@ def main():
         torch.nn.LSTM(EMBEDDING_DIM, HIDDEN_DIM, batch_first=True))
 
     model = LstmClassifier(word_embeddings, encoder, vocab)
+    model.cuda() #ge add
+
     optimizer = optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
 
     iterator = BucketIterator(batch_size=32, sorting_keys=[("tokens", "num_tokens")])
@@ -138,11 +140,14 @@ def main():
                       num_epochs=20)
     trainer.train().cuda()
 
-    predictor = SentenceClassifierPredictor(model, dataset_reader=reader)
-    logits = predictor.predict('This is the best movie ever!')['logits']
-    label_id = np.argmax(logits)
+    predictor = SentenceClassifierPredictor(model, dataset_reader=reader) #ge evaluate test set
 
+    """input port"""
+    logits = predictor.predict('I like this comment so much!')['logits']
+    print(logits) #test
+    label_id = np.argmax(logits)
     print(model.vocab.get_token_from_index(label_id, 'labels'))
+    """input port"""
 
 if __name__ == '__main__':
     main()
