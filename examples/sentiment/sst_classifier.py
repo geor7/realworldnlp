@@ -15,7 +15,8 @@ from allennlp.nn.util import get_text_field_mask
 from allennlp.training.metrics import CategoricalAccuracy, F1Measure
 from allennlp.training.trainer import Trainer
 import sys
-
+# sys.path.append('/Users/geor/git/comp5222-tools/allenNLP/realworldnlp')
+sys.path.append('/home/qianchen/HKUST_COMP5222/realworldnlp/realworldnlp') #server
 # from predictors import SentenceClassifierPredictor
 
 # import os
@@ -135,7 +136,7 @@ def main():
                       validation_dataset=dev_dataset,
                       patience=10,
                       num_epochs=20)
-    trainer.train()
+    trainer.train().cuda()
 
     predictor = SentenceClassifierPredictor(model, dataset_reader=reader)
     logits = predictor.predict('This is the best movie ever!')['logits']
