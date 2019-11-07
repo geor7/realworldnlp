@@ -123,7 +123,13 @@ def main():
         torch.nn.LSTM(EMBEDDING_DIM, HIDDEN_DIM, batch_first=True))
 
     model = LstmClassifier(word_embeddings, encoder, vocab)
-    model.cuda() #ge add
+    # model.cuda() #ge add # might be wrong
+
+    if torch.cuda.is_available():
+        cuda_device = 0
+        model = model.cuda(cuda_device)
+    else:
+        cuda_device = -1
 
     optimizer = optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
 
@@ -137,8 +143,9 @@ def main():
                       train_dataset=train_dataset,
                       validation_dataset=dev_dataset,
                       patience=10,
-                      num_epochs=20)
-    trainer.train().cuda()
+                      num_epochs=20,
+                      cuda_device=cuda_device) # add cuda_device=cuda_device @ge
+    trainer.train()
 
     predictor = SentenceClassifierPredictor(model, dataset_reader=reader) #ge evaluate test set
 
