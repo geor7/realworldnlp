@@ -14,11 +14,19 @@ from allennlp.modules.token_embedders import Embedding
 from allennlp.nn.util import get_text_field_mask
 from allennlp.training.metrics import CategoricalAccuracy, F1Measure
 from allennlp.training.trainer import Trainer
+import sys
 
+# from predictors import SentenceClassifierPredictor
+
+# import os
+print(sys.path)
 from realworldnlp.predictors import SentenceClassifierPredictor
+"""@ge """
+# path_program = '/Users/geor/git/comp5222-tools/allenNLP/realworldnlp/realworldnlp/'
+# os.chdir(path_program)
 
-EMBEDDING_DIM = 128
-HIDDEN_DIM = 128
+EMBEDDING_DIM = 128 #？
+HIDDEN_DIM = 128 #？
 
 # Model in AllenNLP represents a model that is trained.
 @Model.register("lstm_classifier")
@@ -85,8 +93,12 @@ class LstmClassifier(Model):
 def main():
     reader = StanfordSentimentTreeBankDatasetReader()
 
-    train_dataset = reader.read('data/stanfordSentimentTreebank/trees/train.txt')
-    dev_dataset = reader.read('data/stanfordSentimentTreebank/trees/dev.txt')
+    # train_dataset = reader.read('/Users/geor/git/comp5222-tools/allenNLP/realworldnlp/data/tatoeba/sentences.top10langs.train.tsv')
+    # dev_dataset = reader.read('data/tatoeba/sentences.top10langs.dev.tsv')
+    # train_dataset = reader.read('data/stanfordSentimentTreebank/trees/train.txt')
+    # dev_dataset = reader.read('data/stanfordSentimentTreebank/trees/dev.txt')
+    train_dataset = reader.read('https://s3.amazonaws.com/realworldnlpbook/data/stanfordSentimentTreebank/trees/train.txt')
+    dev_dataset = reader.read('https://s3.amazonaws.com/realworldnlpbook/data/stanfordSentimentTreebank/trees/dev.txt')
 
     # You can optionally specify the minimum count of tokens/labels.
     # `min_count={'tokens':3}` here means that any tokens that appear less than three times
