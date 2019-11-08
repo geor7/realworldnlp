@@ -147,24 +147,29 @@ def model_train():
 
     model_file_name = 'trained_model_stanford.pth' # the name of the model
     if os.path.isfile(model_file_name):
+        print("model exist. Loading the model now")
         torch.load(model_file_name)
 
     else:
+        print("model not exist. Training the model now")
         trainer.train()
         torch.save(model, model_file_name)
 
     predictor = SentenceClassifierPredictor(model, dataset_reader=reader) #ge evaluate test set
 
-    "test"
+    # "test"
     # logits = predictor.predict('I like this comment so much!')['logits']
     # print(logits)  # test
     # label_id = np.argmax(logits)
     # print(model.vocab.get_token_from_index(label_id, 'labels'))
-    "test"
+    # "test"
     return predictor,model
 
-def test_sentence(sentence):
-        predictor, model = model_train() # train the model
+def load_model(): #load the model
+    predictor, model = model_train()  # train the model
+    return predictor,model
+
+def test_sentence(sentence, predictor, model): #predit the sentence
         logits = predictor.predict(sentence)['logits']
         print(logits) #test
         label_id = np.argmax(logits)
@@ -174,8 +179,12 @@ def test_sentence(sentence):
 
 
 def main():
+
+    predictor, model = load_model()
     sentence = "I like this movie."
-    test_sentence(sentence)
+    test_sentence(sentence,predictor,model)
+    """before this line is test"""
+
     # reader = StanfordSentimentTreeBankDatasetReader()
     #
     # # train_dataset = reader.read('/Users/geor/git/comp5222-tools/allenNLP/realworldnlp/data/tatoeba/sentences.top10langs.train.tsv')
@@ -247,8 +256,6 @@ def main():
     #     predict_label = model.vocab.get_token_from_index(label_id, 'labels')
     #     print('input:', sentence, 'label:', predict_label,'logits:',logits)
     #     return logits, predict_label
-
-
 
 if __name__ == '__main__':
     main()
