@@ -19,7 +19,7 @@ import sys
 sys.path.append('/home/qianchen/HKUST_COMP5222/realworldnlp') #server
 # from predictors import SentenceClassifierPredictor
 
-# import os
+import os
 print(sys.path)
 from realworldnlp.predictors import SentenceClassifierPredictor
 """@ge """
@@ -144,6 +144,14 @@ def model_train():
                       patience=10,
                       num_epochs=20,
                       cuda_device=cuda_device) # add cuda_device=cuda_device @ge
+
+    model_file_name = 'trained_model_stanford.pth' # the name of the model
+    if os.path.isfile(model_file_name):
+        torch.load(model_file_name)
+
+    else:
+        torch.save(model, model_file_name)
+
     trainer.train()
 
     predictor = SentenceClassifierPredictor(model, dataset_reader=reader) #ge evaluate test set
@@ -154,11 +162,10 @@ def model_train():
     # label_id = np.argmax(logits)
     # print(model.vocab.get_token_from_index(label_id, 'labels'))
     "test"
-
     return predictor,model
 
 def test_sentence(sentence):
-        predictor, model = model_train()
+        predictor, model = model_train() # train the model
         logits = predictor.predict(sentence)['logits']
         print(logits) #test
         label_id = np.argmax(logits)
