@@ -16,11 +16,11 @@ from allennlp.training.metrics import CategoricalAccuracy, F1Measure
 from allennlp.training.trainer import Trainer
 import sys
 # sys.path.append('/Users/geor/git/comp5222-tools/allenNLP/realworldnlp')
-sys.path.append('/home/qianchen/HKUST_COMP5222/realworldnlp') #server
+sys.path.append('/home/qianchen/HKUST_COMP5222/realworldnlp') #add a path for importing realworldnlp properly
 # from predictors import SentenceClassifierPredictor
 
 import os
-print(sys.path)
+# print(sys.path) #for test
 from realworldnlp.predictors import SentenceClassifierPredictor
 """@ge """
 # path_program = '/Users/geor/git/comp5222-tools/allenNLP/realworldnlp/realworldnlp/'
@@ -174,7 +174,7 @@ def test_sentence(sentence, predictor, model): #predit the sentence
         print(logits) #test
         label_id = np.argmax(logits)
         predict_label = model.vocab.get_token_from_index(label_id, 'labels')
-        print('input:', sentence, 'label:', predict_label,'logits:',logits)
+
         return logits, predict_label
 
 
@@ -182,7 +182,8 @@ def main():
 
     predictor, model = load_model()
     sentence = "I like this movie."
-    test_sentence(sentence,predictor,model)
+    logits, predict_label = test_sentence(sentence,predictor,model)
+    print('input:', sentence, 'label:', predict_label, 'logits:', logits)
     """before this line is test"""
 
     # reader = StanfordSentimentTreeBankDatasetReader()
