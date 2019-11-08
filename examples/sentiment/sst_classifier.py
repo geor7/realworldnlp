@@ -171,10 +171,9 @@ def load_model(): #load the model
 
 def test_sentence(sentence, predictor, model): #predit the sentence
         logits = predictor.predict(sentence)['logits']
-        print(logits) #test
+        # print(logits) #test
         label_id = np.argmax(logits)
         predict_label = model.vocab.get_token_from_index(label_id, 'labels')
-
         return logits, predict_label
 
 
