@@ -150,9 +150,8 @@ def model_train():
         torch.load(model_file_name)
 
     else:
+        trainer.train()
         torch.save(model, model_file_name)
-
-    trainer.train()
 
     predictor = SentenceClassifierPredictor(model, dataset_reader=reader) #ge evaluate test set
 
