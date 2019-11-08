@@ -90,8 +90,7 @@ class LstmClassifier(Model):
                 'recall': recall,
                 'f1_measure': f1_measure}
 
-
-def main():
+def model_train():
     reader = StanfordSentimentTreeBankDatasetReader()
 
     # train_dataset = reader.read('/Users/geor/git/comp5222-tools/allenNLP/realworldnlp/data/tatoeba/sentences.top10langs.train.tsv')
@@ -149,12 +148,99 @@ def main():
 
     predictor = SentenceClassifierPredictor(model, dataset_reader=reader) #ge evaluate test set
 
-    """input port"""
-    logits = predictor.predict('I like this comment so much!')['logits']
-    print(logits) #test
-    label_id = np.argmax(logits)
-    print(model.vocab.get_token_from_index(label_id, 'labels'))
-    """input port"""
+    "test"
+    # logits = predictor.predict('I like this comment so much!')['logits']
+    # print(logits)  # test
+    # label_id = np.argmax(logits)
+    # print(model.vocab.get_token_from_index(label_id, 'labels'))
+    "test"
+
+    return predictor,model
+
+def test_sentence(sentence):
+        predictor, model = model_train()
+        logits = predictor.predict(sentence)['logits']
+        print(logits) #test
+        label_id = np.argmax(logits)
+        predict_label = model.vocab.get_token_from_index(label_id, 'labels')
+        print('input:', sentence, 'label:', predict_label,'logits:',logits)
+        return logits, predict_label
+
+
+# def main():
+    # reader = StanfordSentimentTreeBankDatasetReader()
+    #
+    # # train_dataset = reader.read('/Users/geor/git/comp5222-tools/allenNLP/realworldnlp/data/tatoeba/sentences.top10langs.train.tsv')
+    # # dev_dataset = reader.read('data/tatoeba/sentences.top10langs.dev.tsv')
+    # # train_dataset = reader.read('data/stanfordSentimentTreebank/trees/train.txt')
+    # # dev_dataset = reader.read('data/stanfordSentimentTreebank/trees/dev.txt')
+    # train_dataset = reader.read('https://s3.amazonaws.com/realworldnlpbook/data/stanfordSentimentTreebank/trees/train.txt')
+    # dev_dataset = reader.read('https://s3.amazonaws.com/realworldnlpbook/data/stanfordSentimentTreebank/trees/dev.txt')
+    #
+    # # You can optionally specify the minimum count of tokens/labels.
+    # # `min_count={'tokens':3}` here means that any tokens that appear less than three times
+    # # will be ignored and not included in the vocabulary.
+    # vocab = Vocabulary.from_instances(train_dataset + dev_dataset,
+    #                                   min_count={'tokens': 3})
+    #
+    # token_embedding = Embedding(num_embeddings=vocab.get_vocab_size('tokens'),
+    #                             embedding_dim=EMBEDDING_DIM)
+    #
+    # # BasicTextFieldEmbedder takes a dict - we need an embedding just for tokens,
+    # # not for labels, which are used as-is as the "answer" of the sentence classification
+    # word_embeddings = BasicTextFieldEmbedder({"tokens": token_embedding})
+    #
+    # # Seq2VecEncoder is a neural network abstraction that takes a sequence of something
+    # # (usually a sequence of embedded word vectors), processes it, and returns a single
+    # # vector. Oftentimes this is an RNN-based architecture (e.g., LSTM or GRU), but
+    # # AllenNLP also supports CNNs and other simple architectures (for example,
+    # # just averaging over the input vectors).
+    # encoder = PytorchSeq2VecWrapper(
+    #     torch.nn.LSTM(EMBEDDING_DIM, HIDDEN_DIM, batch_first=True))
+    #
+    # model = LstmClassifier(word_embeddings, encoder, vocab)
+    # # model.cuda() #ge add # might be wrong
+    #
+    # if torch.cuda.is_available():
+    #     cuda_device = 0
+    #     model = model.cuda(cuda_device)
+    # else:
+    #     cuda_device = -1
+    #
+    # optimizer = optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
+    #
+    # iterator = BucketIterator(batch_size=32, sorting_keys=[("tokens", "num_tokens")])
+    #
+    # iterator.index_with(vocab)
+    #
+    # trainer = Trainer(model=model,
+    #                   optimizer=optimizer,
+    #                   iterator=iterator,
+    #                   train_dataset=train_dataset,
+    #                   validation_dataset=dev_dataset,
+    #                   patience=10,
+    #                   num_epochs=20,
+    #                   cuda_device=cuda_device) # add cuda_device=cuda_device @ge
+    # trainer.train()
+    #
+    # predictor = SentenceClassifierPredictor(model, dataset_reader=reader) #ge evaluate test set
+    #
+    # "test"
+    # logits = predictor.predict('I like this comment so much!')['logits']
+    # print(logits)  # test
+    # label_id = np.argmax(logits)
+    # print(model.vocab.get_token_from_index(label_id, 'labels'))
+    # "test"
+    #
+    # def test_sentence(sentence):
+    #     logits = predictor.predict(sentence)['logits']
+    #     print(logits) #test
+    #     label_id = np.argmax(logits)
+    #     predict_label = model.vocab.get_token_from_index(label_id, 'labels')
+    #     print('input:', sentence, 'label:', predict_label,'logits:',logits)
+    #     return logits, predict_label
+
+
 
 if __name__ == '__main__':
-    main()
+    # main()
