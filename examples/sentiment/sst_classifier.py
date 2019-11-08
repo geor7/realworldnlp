@@ -174,7 +174,9 @@ def test_sentence(sentence):
         return logits, predict_label
 
 
-# def main():
+def main():
+    sentence = "I like this movie."
+    test_sentence(sentence)
     # reader = StanfordSentimentTreeBankDatasetReader()
     #
     # # train_dataset = reader.read('/Users/geor/git/comp5222-tools/allenNLP/realworldnlp/data/tatoeba/sentences.top10langs.train.tsv')
@@ -249,5 +251,5 @@ def test_sentence(sentence):
 
 
 
-# if __name__ == '__main__':
-    # main()
+if __name__ == '__main__':
+    main()
